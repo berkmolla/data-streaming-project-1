@@ -30,14 +30,8 @@ class Weather(Producer):
     summer_months = set((6, 7, 8))
 
     def __init__(self, month):
-        #
-        #
-        # TODO: Complete the below by deciding on a topic name, number of partitions, and number of
-        # replicas
-        #
-        #
         super().__init__(
-            topic_name="org.chicago.cta.weather", # TODO: Come up with a better topic name
+            topic_name="org.chicago.cta.weather",
             key_schema=Weather.key_schema,
             value_schema=Weather.value_schema,
             # num_partitions=1,
@@ -55,9 +49,6 @@ class Weather(Producer):
             with open(f"{Path(__file__).parents[0]}/schemas/weather_key.json") as f:
                 Weather.key_schema = json.load(f)
 
-        #
-        # TODO: Define this value schema in `schemas/weather_value.json
-        #
         if Weather.value_schema is None:
             with open(f"{Path(__file__).parents[0]}/schemas/weather_value.json") as f:
                 Weather.value_schema = json.load(f)
@@ -74,7 +65,6 @@ class Weather(Producer):
 
     def run(self, month):
         self._set_weather(month)
-        # logger.info("weather kafka proxy integration incomplete - skipping")
         resp = requests.post(
             url=f"{Weather.rest_proxy_url}/topics/{self.topic_name}",
             headers={"Content-Type": "application/vnd.kafka.avro.v2+json"},
